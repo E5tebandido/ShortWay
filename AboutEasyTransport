@@ -1,0 +1,55 @@
+
+
+                info recopilation (from the Django documentation)
+
+			            "from oficial django documentation"
+
+
+
+				using my project, django initial structure.
+
+
+	-------- Commands necessary: --------
+
+$ python -m django --version (global or in mine virtualenv)
+$ django-admin startproject easytransport (in the folder you are going to have the project).
+
+	-------- folders created ------------
+
+1. The external folder easytransport/ is a container of my project.
+2. The file "manage.py" is an utility of command lines to let me interact with the project in different forms.
+3. The internal folder easytransport/ is the property python package for my project. Its name is that i have to use to import all files into it. for example (easytransport.urls).
+4. the easytransport/__init__.py file is an empty file to indicates to python that this directory shoud be consider as a python package. (read about this).
+5. the easytransport/settings.py file is a config or a "setting" about my project.
+6. the easytransport/urls.py are the url declarations for my django project. is a content table based on django.
+7. the easytransport/wsgi.py is an entry point to the web servers compatible with WSGI could be able with your project.
+
+
+
+			Django server (is an utility along the development)
+
+
+	-------- Commands necessary: --------
+
+$ python3 manage.py runserver (port and ip)
+
+	-------------------------------------
+
+-  this server must be used only while you are developying because is an aplication of a web framework.
+-  as early as you run the command and look your server active check in your localserver the view that says "welcome to django and bla bla ".
+
+
+			Creating an Aplication (app) in django
+
+
+	-------- Commands necessary: --------
+
+$ python3 manage.py startapp polls (in my case)(verify you are in the same folder that manage.py)
+
+	------------------------------------- 
+
+1. initially is necessary to go to the terminal, then, stand up in the same folder that manage.py.
+2. it's necessary to check the structure of the created app. 
+
+
+
