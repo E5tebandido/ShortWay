@@ -13,5 +13,4 @@ class edge ( models . Model ):
 	edge_weight = models . IntegerField ()
 	connection = models.ManyToManyField ( nodo )
 
-	def __int__ (self):
-		return self . edge_weight
+	
