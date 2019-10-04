@@ -1,9 +1,10 @@
 from django.contrib import admin
 
-from .models import nodo , edge
+from .models import graph , route
 
-admin . site . register ( nodo )
+admin . site . register ( graph )
 
-admin . site . register ( edge )
+admin . site . register ( route )
+
 
 # Register your models here.

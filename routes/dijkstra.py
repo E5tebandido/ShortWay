@@ -1,69 +1,106 @@
 
-from .models import nodo
+from collections import deque, namedtuple
+from routes import creategraph1
+from .models import graph
 
-class Graph():
-
-	"""
-	- def nodos method void: is a method that implements the algorithm method in the model class
-	"""
-
-
-	def dijkstra ( self ):
-		"""
-		params:	 
-		"""
-		nodes = list(nodo.objects.all())
-		
-		for source_nodo in nodes:
-			dict_source = {}
-			for target_nodo in nodes:
-				if source_nodo == target_nodo
-					dict_source[target_nodo] = 0
-				else:
-					dict_source[target_nodo] = float('inf')
-			self.distances[source_nodo] = dict_source
-
-		for oneNode in nodes: #start algorithm
-			listNode = []
-			for node in nodes: listNode.append(node)
+# we'll use infinity as a default distance to nodes.
+inf = float('inf')
+Edge = namedtuple('Edge', 'start, end, cost')
 
 
-			while len(listQ) != 0:
-				nodeauxiliar = 0
-				min = float("inf")
-				for node_listnode in listNode:
-					if self.distances[oneNode][node_listnode] <= min :
-						min = self.distances[oneNode][node_listnode] 
-						nodeauxiliar = node_listnode
-
-				listNode.remove(nodeauxilar)
-
-				neighbors = list(nodo.objects.all()) 
-
-				for neighbor in neighbors:
-					neighborauxiliar = self.Graph[nodeauxiliar][neighbor]['weight']
-					alt = self.distances[oneNode][nodeauxilar] + neighbor
-					if alt < self.distances[oneNode][neighbor]:
-						self.distances[oneNode][neighbor] = alt
-
-	return self.distances
+def make_edge(start, end, cost=1):
+  return Edge(start, end, cost)
 
 
-	def create_network( self, source_nodo , target_nodo , weight ):
+class Graph:
+    def __init__(self, edges):
+        # let's check that the data is right
+        wrong_edges = [i for i in edges if len(i) not in [2, 3]]
+        if wrong_edges:
+            raise ValueError('Wrong edges data: {}'.format(wrong_edges))
 
-		source= nodo.objects.get(id = source_nodo)
-		target= nodo.objects.get(id = target_nodo)
+        self.edges = [make_edge(*edge) for edge in edges]
 
-		self.Graph = nx.DiGraph()
-		count = len(source_nodo)
+    @property
+    def vertices(self):
+        return set(
+            sum(
+                ([edge.start, edge.end] for edge in self.edges), []
+            )
+        )
 
-		listedges = []
+    def get_node_pairs(self, n1, n2, both_ends=True):
+        if both_ends:
+            node_pairs = [[n1, n2], [n2, n1]]
+        else:
+            node_pairs = [[n1, n2]]
+        return node_pairs
 
-		for i in range(0, count):
-			listedges.append((source, target, weight[i]))
+    def remove_edge(self, n1, n2, both_ends=True):
+        node_pairs = self.get_node_pairs(n1, n2, both_ends)
+        edges = self.edges[:]
+        for edge in edges:
+            if [edge.start, edge.end] in node_pairs:
+                self.edges.remove(edge)
 
-		self.Graph.add_weighted_edges_from(listedges)
-		return self.Graph
+    def add_edge(self, n1, n2, cost=1, both_ends=True):
+        node_pairs = self.get_node_pairs(n1, n2, both_ends)
+        for edge in self.edges:
+            if [edge.start, edge.end] in node_pairs:
+                return ValueError('Edge {} {} already exists'.format(n1, n2))
+
+        self.edges.append(Edge(start=n1, end=n2, cost=cost))
+        if both_ends:
+            self.edges.append(Edge(start=n2, end=n1, cost=cost))
+
+    @property
+    def neighbours(self):
+        neighbours = {vertex: set() for vertex in self.vertices}
+        for edge in self.edges:
+            neighbours[edge.start].add((edge.end, edge.cost))
+
+        return neighbours
+
+    def dijkstra(self, source, dest):
+        assert source in self.vertices, 'Such source node doesnt exist'
+        distances = {vertex: inf for vertex in self.vertices}
+        previous_vertices = {
+            vertex: None for vertex in self.vertices
+        }
+        distances[source] = 0
+        vertices = self.vertices.copy()
+
+        while vertices:
+            current_vertex = min(
+                vertices, key=lambda vertex: distances[vertex])
+            vertices.remove(current_vertex)
+            if distances[current_vertex] == inf:
+                break
+            for neighbour, cost in self.neighbours[current_vertex]:
+                alternative_route = distances[current_vertex] + cost
+                if alternative_route < distances[neighbour]:
+                    distances[neighbour] = alternative_route
+                    previous_vertices[neighbour] = current_vertex
+
+        path, current_vertex = deque(), dest
+        while previous_vertices[current_vertex] is not None:
+            path.appendleft(current_vertex)
+            current_vertex = previous_vertices[current_vertex]
+        if path:
+            path.appendleft(current_vertex)
+        return path
+
+lista = creategraph1 . CreateGraph . create()
+
+thisgraph = Graph(lista)
+
+def processroute ( snode , tnode):
+	source = graph . objects . get ( id = snode )
+	target = graph . objects . get ( id = tnode )
+	print (lista)
+	print ( thisgraph.dijkstra ( 'Pasto' , 'Manizales' ))
+	return thisgraph.dijkstra ( source . source_node , target . target_node )
+
+	
 	
 
-	

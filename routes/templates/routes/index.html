@@ -32,9 +32,9 @@
             <div class="form-group">
                 <label for = "source"> Origen </label>
                 <select name="source" class="form-control" >
-                {% if nodos %}
-                {% for variablenodo in nodos %}
-                  <option value="{{variablenodo.id}}"> {{variablenodo.nodo_name}} </option>
+                {% if source %}
+                {% for sources in source %}
+                  <option value="{{sources.id}}"> {{sources.source_node}} </option>
                   {% endfor %}
                 </select>     
                 {% else %}
@@ -43,9 +43,9 @@
             <div class="form-group">
                 <label for = "target"> Destino </label>
                 <select name="target" class="form-control">
-                {% if nodos %}
-                {% for variablenodo in nodos %}
-                  <option value="{{variablenodo.id}}"> {{variablenodo.nodo_name}} </option>
+                {% if target %}
+                {% for targets in target %}
+                  <option value="{{targets.id}}"> {{targets.target_node}} </option>
                 {% endfor %}
                 </select>
                 {% else %}

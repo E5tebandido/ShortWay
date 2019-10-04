@@ -1,8 +1,8 @@
 
 from django.shortcuts import  render
 
-from .models import nodo
-from routes import dijkstra
+from .models import graph
+from routes import  dijkstra
 
 
 def index ( request ):
@@ -13,14 +13,16 @@ def index ( request ):
 		data = request.POST
 		
 		context = {
-			'var': dijkstra.Graph.dijkstra(data.get("source"))
+			'var': dijkstra.processroute ( data.get ('source'), data.get ('target'))
 
 		}	
 		return render ( request , 'routes/index.html' , context )
 	else:
-		thisnodos = nodo.objects.all()
+		source_node = graph.objects.all()
+		target_node = graph.objects.all() 
 		context = {
-			'nodos': thisnodos
+			'source': source_node,
+			'target': target_node		
 		}
 		return render ( request , 'routes/index.html' , context )
 

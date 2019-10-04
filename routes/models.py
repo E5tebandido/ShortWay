@@ -3,18 +3,24 @@ from django.db import models
 
 # Create your models here.
 
-class nodo ( models . Model ):
-	nodo_name = models . CharField ( max_length = 45 )
+class route ( models . Model ):
+	source_node = models . CharField ( max_length = 45 )
+	target_node = models . CharField ( max_length = 45 )
 
 	def __str__ ( self ):
-		return self . nodo_name
+		return self.source_node
 
-	
 
-class edge ( models . Model ):
-	edge_weight = models . IntegerField ()
-	connection = models.ManyToManyField ( nodo )
+class graph ( models . Model ):
+	source_node = models . CharField ( max_length = 45 )
+	target_node = models . CharField ( max_length = 45 )
+	weight_edge = models . IntegerField ()
 
-	def __add__ ( self ):
-		return self.edge_weight	
+	def __str__ ( self ):
+		return self.target_node
+
+	def __str__ ( self ):
+		return self.source_node
+
+
 
